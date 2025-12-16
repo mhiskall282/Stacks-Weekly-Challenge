@@ -1,0 +1,109 @@
+[package]
+name = "clarity-repl"
+version.workspace = true
+description = "Clarity REPL"
+authors = [
+    "Ludo Galabru <ludo@hiro.so>",
+    "Brice Dobry <brice@hiro.so>",
+    "Reed Rosenbluth <reed@hiro.so>",
+    "Hugo Caillard <hugo@hiro.so>",
+]
+readme = "README.md"
+edition = "2018"
+license = "GPL-3.0-only"
+keywords = ["stacks", "blockchain", "clarity", "smart-contract", "repl"]
+exclude = ["vs-client/**", ".husky", ".git*"]
+homepage = "https://stackslabs.com/clarinet"
+repository = "https://github.com/stx-labs/clarinet"
+categories = [
+    "command-line-utilities",
+    "development-tools",
+    "development-tools::build-utils",
+]
+
+[dependencies]
+chrono = { workspace = true }
+colored = { workspace = true }
+regex = { workspace = true }
+reqwest = { workspace = true, features = ["blocking"] }
+schemars = { workspace = true, optional = true }
+serde = { workspace = true, features = ["derive"] }
+serde_derive = { workspace = true }
+serde_json = { workspace = true, features = ["unbounded_depth"] }
+sha2 = "0.10"
+strum = { workspace = true, features = ["derive"] }
+
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+clarity = { workspace = true, default-features = false, features = ["rusqlite", "developer-mode", "devtools"] }
+clarity-types = { workspace = true, default-features = false, features = ["developer-mode"] }
+rusqlite = { version = "0.31.0", features = ["bundled"] }
+pox-locking = { workspace = true, default-features = true }
+
+comfy-table = "=7.1.4"
+hiro-system-kit = { path = "../hiro-system-kit", default-features = false, features = ["tokio_helpers"] }
+pico-args = { version = "0.5.0" }
+rustyline = { version = "16.0.0" }
+
+# DAP Debugger
+tokio = { workspace = true, optional = true}
+tokio-util = { workspace = true, optional = true }
+futures = { version = "0.3.12", optional = true }
+debug_types = { version = "1.0.0", optional = true }
+httparse = { version = "1.6.0", optional = true }
+bytes = { version = "1.1.0", optional = true }
+log = { version = "0.4.16", optional = true }
+memchr = { version = "2.4.1", optional = true }
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+clarity = { workspace = true, default-features = false, features = ["developer-mode", "devtools", "wasm-web"] }
+clarity-types = { workspace = true, default-features = false, features = ["developer-mode", "wasm-web"] }
+pox-locking = { workspace = true, default-features = false }
+
+comfy-table = { version = "=7.1.4", default-features = false }
+js-sys = { version = "0.3" }
+hiro-system-kit = { path = "../hiro-system-kit", default-features = false }
+serde-wasm-bindgen = { workspace = true }
+wasm-bindgen = { workspace = true }
+web-sys = { workspace = true }
+
+[dev-dependencies]
+test-case = "*"
+divan = "0.1"
+mockito = { workspace = true }
+tempfile = { workspace = true }
+clarinet-files = { path = "../clarinet-files" }
+clarinet-deployments = { path = "../clarinet-deployments" }
+indoc = { workspace = true }
+
+[lib]
+name = "clarity_repl"
+path = "src/lib.rs"
+
+[[bin]]
+name = "clarity-repl"
+path = "src/bin.rs"
+
+[[bench]]
+name = "simnet"
+harness = false
+
+[features]
+default = ["dap"]
+json_schema = ["schemars"]
+dap = [
+    "tokio",
+    "tokio-util",
+    "futures",
+    "debug_types",
+    "httparse",
+    "bytes",
+    "memchr",
+    "log",
+]
+web = [
+    "web-sys/XmlHttpRequest",
+    "web-sys/Event",
+]
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(wasm_bindgen_unstable_test_coverage)'] }

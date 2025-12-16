@@ -1,0 +1,14 @@
+{
+  "rust-analyzer.check.command": "clippy",
+  // rust-analyzer hack:
+  // manually set --workspace in extraArgs so that it's always set only one time
+  "rust-analyzer.check.workspace": false,
+  "rust-analyzer.check.extraArgs": [
+    "--workspace",
+    "--exclude=clarinet-sdk-wasm"
+  ],
+  "rust-analyzer.rustfmt.extraArgs": [
+    "--config",
+    "group_imports=StdExternalCrate,imports_granularity=Module"
+  ]
+}

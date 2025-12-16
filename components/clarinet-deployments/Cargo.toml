@@ -1,0 +1,39 @@
+[package]
+name = "clarinet-deployments"
+version.workspace = true
+edition = "2021"
+
+[dependencies]
+clarity = { workspace = true }
+colored = { workspace = true }
+base64 = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+serde_derive = { workspace = true }
+serde_yaml = { workspace = true }
+strum = { workspace = true, features = ["derive"] }
+rand = { workspace = true }
+reqwest = { workspace = true }
+stacks-common = { workspace = true, default-features = false }
+
+clarity-repl = { path = "../clarity-repl", default-features = false }
+clarinet-files = { path = "../clarinet-files" }
+
+[dev-dependencies]
+indoc = { workspace = true }
+pretty_assertions = { workspace = true }
+toml = { workspace = true }
+
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+bitcoin = "0.31.2"
+bitcoincore-rpc = { workspace= true }
+bitcoincore-rpc-json = { workspace= true }
+base58 = { workspace = true }
+libsecp256k1 = { workspace = true }
+clarinet-utils = { path = "../clarinet-utils" }
+stacks-codec = { path = "../stacks-codec" }
+stacks-rpc-client = { path = "../stacks-rpc-client" }
+
+[lib]
+name = "clarinet_deployments"
+path = "src/lib.rs"

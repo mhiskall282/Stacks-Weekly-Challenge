@@ -1,0 +1,66 @@
+[package]
+name = "stacks-network"
+version.workspace = true
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+bitcoincore-rpc = { workspace= true }
+bollard = "0.17"
+colored = { workspace = true }
+dirs = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true, features = ["preserve_order"] }
+serde_derive = { workspace = true }
+serde_yaml = { workspace = true }
+tracing = "0.1"
+tracing-subscriber = "0.3.20"
+tracing-appender = "0.2.0"
+ctrlc = "3.1.9"
+reqwest = { workspace = true, features = ["blocking"] }
+crossbeam-channel = "0.5.6"
+crossterm = { workspace = true }
+ratatui = { workspace = true }
+chrono = { workspace = true }
+futures = "0.3.12"
+base58 = { workspace = true }
+tokio = { workspace = true}
+clap = { workspace = true, features = ["derive"] }
+toml = { workspace = true }
+rand = { workspace = true }
+flate2 = "1.1.1"
+tar = "0.4.44"
+indoc = { workspace = true }
+
+clarity = { workspace = true, default-features = false }
+stacks-common = { workspace = true, default-features = false }
+stackslib = { workspace = true }
+
+chainhook-sdk = { path = "../chainhook-sdk" }
+chainhook-types = { path = "../chainhook-types" }
+stacks-rpc-client = { path = "../stacks-rpc-client" }
+clarinet-files = { path = "../clarinet-files" }
+clarinet-deployments = { path = "../clarinet-deployments" }
+hiro-system-kit = { path = "../hiro-system-kit", features = ["log"] }
+stacks-codec = { path = "../stacks-codec" }
+libc = "0.2.173"
+
+[target.'cfg(unix)'.dependencies]
+signal-hook = { version = "0.3", features = ["iterator"] }
+
+[dev-dependencies]
+pretty_assertions = { workspace = true }
+stacks-rpc-client = { path = "../stacks-rpc-client", features = ["mock"] }
+
+[lib]
+name = "stacks_network"
+path = "src/lib.rs"
+# Default type
+# crate-type = ["lib"]
+# Use this instead for WASM builds
+crate-type = ["cdylib", "rlib"]
+
+[[bin]]
+name = "stacks-network"
+path = "src/main.rs"

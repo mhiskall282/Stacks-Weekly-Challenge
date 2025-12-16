@@ -1,0 +1,21 @@
+{
+  "folders": [
+    {
+      "path": "./",
+    },
+    {
+      "path": "../../",
+    },
+  ],
+  "settings": {
+    "rust-analyzer.cargo.noDefaultFeatures": true,
+    "rust-analyzer.check.overrideCommand": [
+      "cargo",
+      "clippy",
+      "--target=wasm32-unknown-unknown",
+      "--no-default-features",
+      "--package=clarity-lsp",
+      "--message-format=json",
+    ],
+  },
+}

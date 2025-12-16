@@ -1,0 +1,24 @@
+[package]
+name = "stacks-rpc-client"
+version.workspace = true
+description = "HTTP Client for the Stacks blockchain"
+license = "GPL-3.0"
+edition = "2021"
+
+[dependencies]
+serde = { workspace = true }
+serde_json = { workspace = true }
+serde_derive = { workspace = true }
+reqwest = { workspace = true, features = ["blocking"] }
+libsecp256k1 = { workspace = true }
+
+clarity = { workspace = true, default-features = false }
+stacks-common = { workspace = true, default-features = false }
+clarinet-utils = { path = "../clarinet-utils" }
+stacks-codec = { path = "../stacks-codec" }
+
+# enable mock stacks rpc for tests
+mockito = { version = "1.6", default-features = false, optional = true }
+
+[features]
+mock = ["mockito"]

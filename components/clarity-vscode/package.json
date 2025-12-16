@@ -1,0 +1,266 @@
+{
+  "name": "clarity-stacks",
+  "displayName": "Clarity - Stacks Labs",
+  "description": "Syntax highlighting, code completion, documentation, and debugging for Clarity smart contracts. Build decentralized applications on Stacks.",
+  "author": "Stacks Labs",
+  "publisher": "stackslabs",
+  "icon": "assets/images/clarity-logo.png",
+  "homepage": "https://stackslabs.com/clarinet",
+  "bugs": "https://github.com/stx-labs/clarinet/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stx-labs/clarinet"
+  },
+  "license": "GPL-3.0-only",
+  "version": "3.11.0",
+  "private": true,
+  "workspaces": [
+    "client",
+    "server",
+    "debug"
+  ],
+  "scripts": {
+    "clean": "rimraf .vscode-test-web ./debug/dist ./client/dist ./server/dist ./server/src/clarity-lsp-*",
+    "pretest": "NODE_ENV=test concurrently \"webpack -c ./webpack.config.dev.js\" \"swc --config-file .runTests.swcrc ./client/tests/runTests.ts -o ./client/dist/tests/runTests.js\"",
+    "test": "node client/dist/tests/runTests.js",
+    "lint": "eslint ./client/src ./server/src",
+    "dev:watch": "webpack -c ./webpack.config.dev.js -w",
+    "dev:browser": "vscode-test-web --extensionDevelopmentPath=. ./test-data --open-devtools",
+    "dev": "webpack -c ./webpack.config.dev.js && concurrently \"npm:dev:*\"",
+    "vscode:prepublish": "npm run clean && NODE_ENV=production webpack",
+    "vsce:package": "vsce package",
+    "vsce:publish": "vsce publish",
+    "vsce:prerelease": "vsce publish --pre-release"
+  },
+  "categories": [
+    "Programming Languages",
+    "Linters",
+    "Debuggers",
+    "Formatters",
+    "Testing"
+  ],
+  "keywords": [
+    "clarity",
+    "stacks",
+    "smart contract",
+    "lsp",
+    "bitcoin",
+    "blockchain"
+  ],
+  "galleryBanner": {
+    "color": "#242424",
+    "theme": "dark"
+  },
+  "qna": "https://github.com/stx-labs/clarinet/issues",
+  "engines": {
+    "vscode": "^1.64.0"
+  },
+  "activationEvents": [
+    "workspaceContains:Clarinet.toml"
+  ],
+  "main": "./client/dist/clientNode.js",
+  "browser": "./client/dist/clientBrowser.js",
+  "contributes": {
+    "configuration": [
+      {
+        "id": "clariy-lsp",
+        "title": "Clarity",
+        "properties": {
+          "clariy-lsp.trace.server": {
+            "type": "string",
+            "scope": "window",
+            "enum": [
+              "off",
+              "messages",
+              "verbose"
+            ],
+            "default": "verbose",
+            "description": "Traces the communication between VS Code and the web-extension language server."
+          },
+          "clarity-lsp.completion": {
+            "type": "boolean",
+            "default": true,
+            "order": 0,
+            "description": "Allow auto-completion for native and user-defined functions."
+          },
+          "clarity-lsp.completionSmartParenthesisWrap": {
+            "type": "boolean",
+            "default": true,
+            "order": 0,
+            "description": "If set to true, the auto-completion won't wrap a function with a parenthesis if an opening parenthesis is already there."
+          },
+          "clarity-lsp.completionIncludeNativePlaceholders": {
+            "type": "boolean",
+            "default": true,
+            "order": 0,
+            "description": "If set to true, the auto-completion of native functions will include placeholders for the arguments."
+          },
+          "clarity-lsp.formatting": {
+            "type": "boolean",
+            "default": true,
+            "order": 0,
+            "description": "If set to false, the Clarity formatter is fully disabled"
+          },
+          "clarity-lsp.hover": {
+            "type": "boolean",
+            "default": true,
+            "order": 0,
+            "description": "Show documentation for native function and keywords on hover."
+          },
+          "clarity-lsp.documentSymbols": {
+            "type": "boolean",
+            "default": false,
+            "order": 0,
+            "description": "Show contract symbols in breadcrumb (beta)."
+          },
+          "clarity-lsp.goToDefinition": {
+            "type": "boolean",
+            "default": true,
+            "order": 0,
+            "description": "Enable go to definition."
+          },
+          "clarity-lsp.signatureHelp": {
+            "type": "boolean",
+            "default": true,
+            "order": 0,
+            "description": "Show function signature help."
+          },
+          "clarity-lsp.debug.logRequestsTimings": {
+            "type": "boolean",
+            "default": false,
+            "description": "Log LSP requests performances."
+          }
+        }
+      }
+    ],
+    "languages": [
+      {
+        "id": "clarity",
+        "aliases": [
+          "Clarity",
+          "clarity"
+        ],
+        "extensions": [
+          ".clar"
+        ],
+        "icon": {
+          "light": "./assets/images/file-icon/clar-light-theme.svg",
+          "dark": "./assets/images/file-icon/clar-dark-theme.svg"
+        },
+        "configuration": "./language-configuration.json"
+      },
+      {
+        "id": "toml",
+        "extensions": [
+          ".toml"
+        ]
+      }
+    ],
+    "grammars": [
+      {
+        "language": "clarity",
+        "scopeName": "source.clar",
+        "path": "./syntaxes/clarity.tmLanguage.json"
+      }
+    ],
+    "viewsContainers": {
+      "panel": [
+        {
+          "id": "clarityPanel",
+          "title": "Clarity",
+          "icon": "assets/images/file-icon/clar-dark-theme.svg",
+          "when": "config.clariy-lsp.panels.insights-panel"
+        }
+      ]
+    },
+    "views": {
+      "clarityPanel": [
+        {
+          "type": "webview",
+          "id": "clariy-lsp.clarityInsightsView",
+          "icon": "",
+          "name": "Insights",
+          "when": "config.clariy-lsp.panels.insights-panel"
+        }
+      ]
+    },
+    "breakpoints": [
+      {
+        "language": "clarity"
+      }
+    ],
+    "debuggers": [
+      {
+        "type": "clarinet",
+        "label": "Clarinet Debug",
+        "program": "./debug/dist/debug.js",
+        "runtime": "node",
+        "languages": [
+          "clarity"
+        ],
+        "configurationAttributes": {
+          "launch": {
+            "required": [
+              "manifest",
+              "expression"
+            ],
+            "properties": {
+              "manifest": {
+                "type": "string",
+                "description": "Path to Clarinet.toml."
+              },
+              "expression": {
+                "type": "string",
+                "description": "Expression to debug."
+              }
+            }
+          }
+        },
+        "initialConfigurations": [
+          {
+            "type": "clarinet",
+            "request": "launch",
+            "name": "Call .foo.bar",
+            "manifest": "${workspaceFolder}/Clarinet.toml",
+            "expression": "(contract-call? .foo bar 42)"
+          }
+        ],
+        "configurationSnippets": [
+          {
+            "label": "Clarinet Debugger",
+            "description": "A new configuration for debugging a smart contract.",
+            "body": {
+              "type": "clarinet",
+              "request": "launch",
+              "name": "Call .foo.bar",
+              "manifest": "${workspaceFolder}/Clarinet.toml",
+              "expression": "(contract-call? .foo bar 42)"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.1.0",
+    "@eslint/js": "^9.13.0",
+    "@swc/cli": "^0.7.5",
+    "@swc/core": "^1.7.40",
+    "@typescript-eslint/eslint-plugin": "^8.11.0",
+    "@typescript-eslint/parser": "^8.11.0",
+    "@vscode/test-web": "^0.0.75",
+    "@vscode/vsce": "^3.2.2",
+    "@wasm-tool/wasm-pack-plugin": "^1.6.0",
+    "concurrently": "^9.1.2",
+    "copy-webpack-plugin": "^13.0.0",
+    "eslint": "^9.13.0",
+    "ovsx": "^0.10.2",
+    "path-browserify": "^1.0.1",
+    "regenerator-runtime": "^0.14.0",
+    "rimraf": "^6.0.1",
+    "swc-loader": "^0.2.3",
+    "typescript": "^5.0.2",
+    "webpack": "^5.76.0",
+    "webpack-cli": "^6.0.1"
+  }
+}

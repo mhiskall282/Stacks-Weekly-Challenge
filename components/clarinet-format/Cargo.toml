@@ -1,0 +1,21 @@
+[package]
+name = "clarinet-format"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+clarity = { workspace = true, default-features = false, features = ["developer-mode", "devtools"] }
+
+[dev-dependencies]
+pretty_assertions = { workspace = true }
+divan = "0.1"
+indoc = { workspace = true }
+
+[[bench]]
+name = "formatter"
+harness = false
+
+[lib]
+name = "clarinet_format"
+path = "src/lib.rs"
+crate-type = ["lib"]

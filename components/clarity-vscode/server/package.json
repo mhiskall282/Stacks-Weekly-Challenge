@@ -1,0 +1,20 @@
+{
+  "name": "@stacks/clarity-lsp-server",
+  "description": "Example implementation of a language server in a web extension.",
+  "version": "1.0.0",
+  "author": "Stacks Labs",
+  "license": "MIT",
+  "engines": {
+    "node": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stx-labs/clarinet"
+  },
+  "dependencies": {
+    "node-fetch": "^3.2.10",
+    "toml": "^3.0.0",
+    "vscode-languageserver": "^9.0.1"
+  },
+  "scripts": {}
+}

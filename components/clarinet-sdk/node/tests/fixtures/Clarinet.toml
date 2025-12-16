@@ -1,0 +1,31 @@
+[project]
+name = 'fixtures'
+description = 'sample project to test clarinet-sdk'
+telemetry = false
+cache_dir = './.cache'
+requirements = []
+
+[contracts.multiplier-trait]
+path = 'contracts/multiplier-trait.clar'
+clarity_version = 2
+epoch = 2.4
+
+[contracts.multiplier-contract]
+path = 'contracts/multiplier-contract.clar'
+clarity_version = 2
+epoch = 2.4
+
+[contracts.counter]
+path = 'contracts/counter.clar'
+clarity_version = 2
+epoch = 2.4
+
+[contracts.block-height-tests]
+path = 'contracts/block-height-tests.clar'
+clarity_version = 2
+epoch = 2.4
+
+[contracts.stacks-trace-test]
+path = 'contracts/stacks-trace-test.clar'
+clarity_version = 3
+epoch = 3.1
